@@ -1,11 +1,16 @@
-# La idea es intentar hacer un menu el cual se ejecute una y otra vez cada que se termina de hacer una opcion.
-# En el ejercicio real se pedira una serie de programas alojados en funciones, que se llamaran cada que se seleccione dentro del match con el valor que pase el usuario.
+# La idea es intentar hacer un menu el cual se ejecute una y otra vez cada que
+# se termina de hacer una opcion. En el ejercicio real se pedira una serie
+# de programas alojados en funciones, que se llamaran cada que
+# se seleccione dentro del match con el valor que pase el usuario.
 
 def bucle():
+    """
+        Bucle desactualizado. Vease bucle2().
+    """
     program_value = True
     while program_value:
         try:
-            option = int(input("Seleccione una de las opciones: ")) 
+            option = int(input("Seleccione una de las opciones: "))
         except ValueError:
             print("No ha ingresado un valor valido")
             continue
@@ -13,13 +18,51 @@ def bucle():
         match option:
             case 1:
                 print("xd")
+                return bucle()
             case 2:
                 print("dx")
+                return bucle()
             case 3:
                 print("lx")
+                return bucle()
             case 4:
                 print("chao")
                 program_value = False
+
+
+def bucle2():
+    """
+        funcion bucle2
+        Menu interactivo hecho mediante match y combinado con try-except para manejo
+        de errores.
+
+            Args:
+                opcion: Se introduce una de las opciones del menu y ejecuta
+                la funcion asignada al caso. En caso de que la funcion sea
+                4, el menu match termina.
+
+            devuelve:
+                Devuelve la funcion asignada al caso, y al terminar vuelve al menu.
+    """
+    try:
+        opcion = int(input("Seleccione una de las opciones: "))
+    except ValueError:
+        print("Valor invalido")
+        return bucle2()
+
+    match opcion:
+        case 1:
+            print("xd")
+            return bucle()
+        case 2:
+            print("dx")
+            return bucle()
+        case 3:
+            print("lx")
+            return bucle()
+        case 4:
+            print("chao")
+
 
 """
     program_value=True # El valor del prorgrama es True

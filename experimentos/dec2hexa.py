@@ -1,5 +1,4 @@
 import customtkinter as ctk
-
 import math
 
 
@@ -33,7 +32,7 @@ class AppColor(ctk.CTk):
         self.geometry("400x500")
         self.enBucle = False
         self.faseBucle = 0
-        self.cuadroColor = ctk.CTkFrame(self, width=400, height=150, corner_radius=20)
+        self.cuadroColor = ctk.CTkFrame(self, width=300, height=300, corner_radius=50)
         self.cuadroColor.pack(pady=20)
         self.lblHex = ctk.CTkLabel(self.cuadroColor, text="#000000", font=("Arial", 24, "bold"))
         self.lblHex.place(relx=0.5, rely=0.5, anchor="center")

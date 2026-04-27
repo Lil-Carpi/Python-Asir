@@ -51,8 +51,5 @@ def main():
         print("No has introducido ningun parametro. Usa -h para ver la ayuda.")
 
 
-
-
-
 if __name__ == "__main__":
     main()

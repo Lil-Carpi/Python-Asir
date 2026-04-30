@@ -10,6 +10,16 @@ Si el segon fitxer no és vàlid, ha de mostrar un missatge informatiu.
 
 4- Crea un mètode escriuPos, que escrigui una frase en un fitxer, a una posició concreta. Si la posició és incorrecta, ha de mostrar un missatge informatiu.
 """
+"""
+    Nota personal:
+        Todos los prints que se hagan dentro de las funciones que no sean main deberan ser returns.
+        Para verificar si los ficheros existen se puede utilizar las validaciones Path como try ... except.
+        Todas las funciones han de estar debidamente comentadas para asegurarse de que en un futuro sean entendibles. 
+"""
+
+
+
+
 import sys
 from pathlib import Path
 
@@ -44,7 +54,7 @@ def concatena(Ffile, Sfile): # Hecho
                 first.write(second.read())
                 return "Hecho. Verifica el fichero para ver los cambios."
     else:
-        print(f"El archivo {Sfile} no existe")
+        return f"El archivo {Sfile} no existe"
         
 
     # guarda el path del segundo fichero
@@ -56,11 +66,59 @@ def concatena(Ffile, Sfile): # Hecho
         # Imprime que el segundo fichero no existe.
 
 
-def afegir(filename, llista):
-    print(f"Valor pasado: {llista}\nescribe el contenido de una lista en un fichero (con append) y el contenido original no se ha de borrar")
+def afegir(filename, lista_str):
+    print(f"Valor pasado: {lista_str} \nescribe el contenido de una lista en un fichero (con append) y el contenido original no se ha de borrar")
+    file = Path(filename)
+    if file.exists():
+        llista = lista_str.split(",")
+        with open(file, "a") as f:
+            for element in llista:
+                f.write(f"{element}\n")
+        return "Añadido con exito."
+    else:
+        return f"El fichero {filename} no existe."
+
+    # Verifica que el fichero existe mirando el path
+    # Si el fichero existe:
+        # Guarda en la variable llista la separacion del string a lista a partir de la ",". E.j: "1","2","3" -> [1, 2, 3]
+        # Abre el fichero file para concatenar como 
+            # Por cada elemento en la variable llista:
+                # Escribe en f la variable elemento.
+    # Si no:
+        # Improme que el fichero pasado no existe.
 
 def escriuPos(filename, frase, linea):
     print(f"Valor pasado:{frase}, {linea}\n Escribe una frase en la posicion concreta que se le pase.")
+    file = Path(filename)
+    if file.exists():
+        pos = int(linea)
+        with open(filename, "r") as fichero:
+            lineas = fichero.readlines()
+
+        if linea < 0 or pos > len(lineas):
+            return f"La posicion {pos} es incorrecta. Debe estar entre 0 y {len(lineas)}."
+        else:
+            lineas.insert(pos, frase + "\n")
+            with open(filename, "w") as fichero:
+                fichero.writelines(lineas)
+                return "La frase se ha escrito correctamente."
+    else:
+        return f"El fichero {filename} no existe."
+
+
+    # Verifica que el fichero existe mirando el path
+    #  Si el fichero existe:
+        # guarda en la variable pos el integer de la variable pasada linea.
+        # abre el fichero para lectura como fichero
+            # Guarda en la variable linea el readlines del fichero
+        # Si la linea es menor que cero o la posicion guardado en la variable pos es menor a la cantidad de lineas
+            # Imprime que la posicion (variable pos) es incorrecta. Debe estar entre 0 y la cantidad de lineas en la variable lineas.
+        # si no:
+            # Inserta en la variable linea la variable pos y variable frase y deja una linea en blanco
+            # abre filename en modo escritura con nombre fichero 
+            # Imprime que la frase se ha escrito correctamente
+    # Si no:
+        # Imprime que el archivo filename no existe.
 
 
 def main():
@@ -78,6 +136,7 @@ def main():
     # Esto ayuda a saber cuando parar el bucle while.
     
     if args == []: # Si no se pasa ningun parametro
+        print("No ha dado ningún comando")
         usage()    # Se devuelve el help
 
     while argval < len(args):
@@ -141,8 +200,55 @@ def main():
                     # Imprime que valta especificar los dos ficheros a concatenar.
                     # Sumale 1 punto al puntero.
 
+        elif arg in ("-l", "--listar"):
+            if argval + 2 < len(args):
+                filename = str(args[argval + 1])
+                lista_str = str(args[argval + 2])
+                resultado = afegir(filename, lista_str)
+                print(resultado)
+                argval += 3
+            else:
+                print("Error: Falta especificar o el fichero o la lista a concatenar.")
+                argval +=1
+        
+        # Si arg vale "-l" o "--listar", ejecuta:
+            # si existen al menos dos archivos despues del "-l" (deberian ser dos ficheros), ejecuta
+                # Guarda el primer fichero pasado como string.
+                # Guarda el segundo fichero pasado como string.
+                # Guarda el resultado en la variable resultado, el cual es el return de la funcion afegir al cual se le ha pasado el primer y segundo fichero consecutivamente.
+                # Imprime la variable resultado
+                # Añade 3 puntos al puntero.
+            # si no:
+                # Imprime que falta especificar el fichero o lista a concatenar.
+                # Sumale 1 al puntero.
+
+
+        elif arg in ("-e", "--echoPos"):
+            if argval + 3 < len(args):
+                filename = str(args[argval + 1])
+                frase = str(args[argval + 2])
+                linea = str(args[argval +3])
+                resultado = escriuPos(filename, frase, linea)
+                print(resultado)
+                argval += 4
+            else:
+                print("Error: Se esperaban más argumentos.")
+                argval +=1
+        
+        # Si arg vale "-e" o "--echoPos", ejecuta:
+            # Si existen al menos tres acompañantes de cada parametro, el primero siendo un fichero, ejecuta:
+                # Guarda el fichero pasado como string
+                # Guarda el primer acompañante del segundo parametro pasado como string.
+                # Guarda el segundo acompañante del tercer parametro pasado como string.
+                # Guarda el resultado en la variable resultado, el cual es el return de la funcion escriuPos al cual se le ha pasado el fichero, el primer y segundo acompañante del primer y segundo parametro consecutivamente.
+                # Imprime la variable resultado.
+                # Añade 4 puntos al puintero
+            # Si no:
+                # Imprime que se esperaban mas argumentos.
+                # sumale 1 al puntero.
+
         else:
-            print(f"Valor {args} no existe.")
+            print(f"Valor {arg} no existe.")
             usage()
             return
         ## Si se pasa un parametro que no existe:
